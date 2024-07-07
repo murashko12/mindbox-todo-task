@@ -15,12 +15,30 @@ const TodoList: React.FC<ITodoListProps> = (props) => {
         <div className="flex flex-col gap-5">
             <ul>
                 {
-                    items.filter(todo => !todo.completed).map((todo) => (<TodoItem key={todo.id} toggleTodo={toggleTodo} deleteTodo={deleteTodo} {...todo}/>))
+                    items.filter(todo => !todo.completed).map(
+                        (todo) => (
+                            <TodoItem 
+                                key={todo.id} 
+                                toggleTodo={toggleTodo} 
+                                deleteTodo={deleteTodo} 
+                                {...todo}
+                            />
+                        )
+                    )
                 }
             </ul>
             <ul>
                 {
-                    items.filter(todo => todo.completed).map((todo) => (<TodoItem key={todo.id} toggleTodo={toggleTodo} deleteTodo={deleteTodo} {...todo}/>))
+                    items.filter(todo => todo.completed).map(
+                        (todo) => (
+                            <TodoItem 
+                                key={todo.id} 
+                                toggleTodo={toggleTodo} 
+                                deleteTodo={deleteTodo} 
+                                {...todo}
+                            />
+                        )
+                    )
                 }
             </ul>
         </div>
