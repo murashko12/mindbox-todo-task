@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { ITodo } from "./types/ITodo"
 import { RiDeleteBin6Line } from "react-icons/ri";
 
@@ -7,16 +7,13 @@ function App() {
   const [todos, setTodos] = useState<ITodo[]>([])
   const [newTodo, setNewTodo] = useState('')
 
-  useEffect(() => {
-    const storedTodos = localStorage.getItem('todos')
-    if (storedTodos) {
-      setTodos(JSON.parse(storedTodos))
-    }
-  }, [])
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos])
+  const handleKeydown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter'){
+      addTodo()
+    }
+  }
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
@@ -28,7 +25,13 @@ function App() {
       setTodos([...todos, newTodoItem])
       setNewTodo('')
     }
-  };
+  }
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, []);
 
   const toggleTodo = (id: string) => {
     setTodos(
@@ -50,6 +53,8 @@ function App() {
             type="text"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
+            onKeyDown={handleKeydown}
+            ref={inputRef}
             placeholder="Enter todo" 
             className="h-8 w-64 bg-transparent py-2 border-b-2 text-gray-200" 
           />
