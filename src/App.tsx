@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 import { ITodo } from "./types/ITodo"
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { TodoList } from "./components/TodoList";
 
 function App() {
 
@@ -13,6 +13,10 @@ function App() {
     if (e.key === 'Enter'){
       addTodo()
     }
+  }
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setNewTodo(e.target.value)
   }
 
   const addTodo = () => {
@@ -33,7 +37,7 @@ function App() {
     }
   }, []);
 
-  const toggleTodo = (id: string) => {
+  const toggleTodo = (id: string): void => {
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -41,7 +45,7 @@ function App() {
     )
   }
 
-  const deleteTodo = (id: string) => {
+  const deleteTodo = (id: string): void => {
     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
@@ -52,7 +56,7 @@ function App() {
           <input 
             type="text"
             value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
+            onChange={handleChange}
             onKeyDown={handleKeydown}
             ref={inputRef}
             placeholder="Enter todo" 
@@ -65,51 +69,7 @@ function App() {
             ADD
           </button>
         </div>
-        <div className="flex flex-col gap-5">
-          <ul>
-            {todos.filter(todo => !todo.completed).map((todo) => (
-              <li 
-                key={todo.id}
-                className="flex items-center w-[365px] px-5 py-2 border-2 rounded-md text-gray-200 justify-between mb-5"
-              >
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => toggleTodo(todo.id)}
-                />
-                <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-                  {todo.text}
-                </span>
-                <button
-                  className="flex items-center justify-center text-red-800 bg-slate-200 h-7 w-7 rounded-full" 
-                  onClick={() => deleteTodo(todo.id)}><RiDeleteBin6Line size={20} />
-                </button>
-              </li>
-            ))}
-          </ul>
-          <ul>
-            {todos.filter(todo => todo.completed).map((todo) => (
-              <li 
-                key={todo.id}
-                className="flex items-center w-[365px] px-5 border-2 rounded-md text-gray-200 justify-between mb-5"
-              >
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => toggleTodo(todo.id)}
-                />
-                <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-                  {todo.text}
-                </span>
-                <button
-                  className="flex items-center justify-center text-red-800 bg-slate-200 h-9 w-9 rounded-full" 
-                  onClick={() => deleteTodo(todo.id)}>
-                    <RiDeleteBin6Line size={25} />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <TodoList items={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>
       </div>
     </>
   )
