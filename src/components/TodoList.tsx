@@ -7,7 +7,6 @@ interface ITodoListProps {
     items: ITodo[];
     toggleTodo: (id: string) => void;
     deleteTodo: (id: string) => void;
-
 }
 
 const TodoList: React.FC<ITodoListProps> = (props) => {
